@@ -2,951 +2,486 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>مهند ♥ سحر — قصة حبٍّ أبدي</title>
-<link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&family=Scheherazade+New:wght@400;500;600;700&family=Noto+Naskh+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>مهند ♥ سحر</title>
+<link href="https://fonts.googleapis.com/css2?family=Scheherazade+New:wght@400;700&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
 <style>
-/* ═══════════════════════════════════════════
-   ROOT & RESET
-═══════════════════════════════════════════ */
-:root{
-  --g1:#B8862A;--g2:#D4A843;--g3:#F0CC70;--g4:#FBE89A;
-  --rose:#8B3A2A;--rose2:#C4705A;--rose3:#E8A080;
-  --deep:#080400;--ink:#2A1500;
-  --w:min(500px,96vw);
-  --page-h:100vh;
-}
-*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html{scroll-behavior:smooth;overflow:hidden}
-body{
-  background:var(--deep);
-  font-family:'Scheherazade New','Amiri',serif;
-  width:100vw;height:100vh;
-  overflow:hidden;
-  position:relative;
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+
+:root {
+  --gold: #C9A040;
+  --gold2: #F0CC70;
+  --dark: #0A0500;
+  --rose: #C4705A;
 }
 
-/* ═══════════════════════════════════════════
-   STARFIELD + AMBIENT
-═══════════════════════════════════════════ */
-#stars{position:fixed;inset:0;z-index:0;pointer-events:none}
-.star{position:absolute;border-radius:50%;background:#fff;animation:twinkle ease-in-out infinite}
-@keyframes twinkle{0%,100%{opacity:.15;transform:scale(1)}50%{opacity:1;transform:scale(1.6)}}
-#ambient{position:fixed;inset:0;z-index:0;pointer-events:none;transition:background 1.4s ease}
-#petals{position:fixed;inset:0;pointer-events:none;z-index:1;overflow:hidden}
-.petal{position:absolute;top:-30px;opacity:0;animation:fallP linear infinite}
-@keyframes fallP{0%{opacity:0;transform:translateY(0)rotate(0)}8%{opacity:.6}90%{opacity:.2}100%{opacity:0;transform:translateY(105vh)rotate(900deg)}}
-
-/* ═══════════════════════════════════════════
-   PAGE SYSTEM
-═══════════════════════════════════════════ */
-#pages{
-  position:relative;z-index:2;
-  width:100%;height:100vh;
-  overflow:hidden;
+html, body {
+  height: 100%;
+  background: var(--dark);
+  font-family: 'Scheherazade New', 'Amiri', serif;
+  overflow: hidden;
 }
-.page{
-  position:absolute;inset:0;
-  display:flex;align-items:center;justify-content:center;
-  opacity:0;pointer-events:none;
-  transition:opacity .9s ease, transform .9s ease;
-  transform:translateY(40px);
+
+/* ── stars ── */
+#stars { position:fixed; inset:0; z-index:0; pointer-events:none; }
+.s { position:absolute; border-radius:50%; background:#fff; animation:tw ease-in-out infinite; }
+@keyframes tw { 0%,100%{opacity:.1} 50%{opacity:.8} }
+
+/* ── petals ── */
+#pt { position:fixed; inset:0; z-index:1; pointer-events:none; overflow:hidden; }
+.p { position:absolute; top:-20px; opacity:0; animation:fp linear infinite; }
+@keyframes fp { 0%{opacity:0;transform:translateY(0)rotate(0)} 10%{opacity:.5} 90%{opacity:.2} 100%{opacity:0;transform:translateY(105vh)rotate(720deg)} }
+
+/* ── progress ── */
+#prog { position:fixed; top:0; left:0; height:2px; background:linear-gradient(90deg,var(--gold),var(--gold2)); z-index:200; transition:width .6s ease; box-shadow:0 0 6px var(--gold); }
+
+/* ── pages ── */
+#pages { position:relative; z-index:2; width:100vw; height:100vh; overflow:hidden; }
+.page {
+  position:absolute; inset:0;
+  display:flex; align-items:center; justify-content:center;
+  opacity:0; pointer-events:none;
+  transition:opacity .75s ease, transform .75s ease;
+  transform:translateY(30px);
   overflow-y:auto;
-  padding:20px 0;
+  padding:12px 0 64px;
+  -webkit-overflow-scrolling:touch;
 }
-.page.active{opacity:1;pointer-events:all;transform:translateY(0)}
-.page.exit-up{opacity:0;transform:translateY(-50px)}
-.page.exit-down{opacity:0;transform:translateY(50px)}
+.page.active { opacity:1; pointer-events:all; transform:translateY(0); }
+.page.exit-up   { opacity:0; transform:translateY(-36px); }
+.page.exit-down { opacity:0; transform:translateY(36px); }
 
-/* ═══════════════════════════════════════════
-   CARD SHELL
-═══════════════════════════════════════════ */
-.card{
-  width:var(--w);
+/* ── card ── */
+.card {
+  width: min(430px, 92vw);
+  position: relative;
+  filter: drop-shadow(0 0 40px rgba(180,140,40,.25)) drop-shadow(0 16px 50px rgba(0,0,0,.7));
+}
+
+/* spinning border */
+.cframe {
   position:relative;
-  filter:drop-shadow(0 0 50px rgba(180,140,40,.3)) drop-shadow(0 20px 60px rgba(0,0,0,.7));
+  background:#100800;
+  padding:2.5px;
+  border-radius:3px;
+  overflow:hidden;
 }
-.card-frame{
-  position:relative;
-  background:linear-gradient(160deg,#1A0D00,#110800);
-  padding:3px;border-radius:2px;overflow:hidden;
+.cframe::before {
+  content:'';
+  position:absolute;inset:0;
+  background:conic-gradient(from 0deg,var(--gold),var(--gold2),var(--gold),var(--rose),var(--gold));
+  animation:spin 9s linear infinite;
 }
-.card-frame::before{
-  content:'';position:absolute;inset:0;
-  background:conic-gradient(from 0deg,var(--g1),var(--g3),var(--g2),var(--g3),var(--g1));
-  animation:bspin 8s linear infinite;
-}
-@keyframes bspin{to{transform:rotate(360deg)}}
-.card-inner{
-  position:relative;z-index:1;
-  border-radius:1px;overflow:hidden;
-}
+@keyframes spin { to{transform:rotate(360deg)} }
 
-/* different bg per page */
-.story-bg{background:linear-gradient(170deg,#0D0500,#1A0A00,#0D0500)}
-.gold-bg{background:linear-gradient(170deg,#FDF3CC,#F8E49E,#F3D678,#EEC95A)}
-.dark-bg{background:linear-gradient(170deg,#120800,#1E0E00,#120800)}
-.rose-bg{background:linear-gradient(170deg,#1A0505,#250D08,#1A0505)}
+.cin {
+  position:relative;z-index:1;border-radius:2px;overflow:hidden;
+}
+.dk  { background:linear-gradient(170deg,#0B0400,#160900,#0B0400); }
+.gd  { background:linear-gradient(170deg,#FDF3CC,#F8E49E,#F0D060); }
 
-.shimmer{
-  position:absolute;top:0;bottom:0;width:70px;
-  background:linear-gradient(90deg,transparent,rgba(255,255,255,.35),transparent);
-  transform:skewX(-20deg);
-  animation:sweep 6s 2s ease infinite;
+.wm {
+  position:absolute;inset:0;opacity:.03;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='70' height='70'%3E%3Cpolygon points='35,2 68,18 68,52 35,68 2,52 2,18' fill='none' stroke='%23fff' stroke-width='.7'/%3E%3C/svg%3E");
+}
+.sh {
+  position:absolute;top:0;bottom:0;width:60px;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.28),transparent);
+  transform:skewX(-18deg);
+  animation:sw 6s 2s ease infinite;
+  pointer-events:none;z-index:50;
+}
+@keyframes sw { 0%{left:-80px} 100%{left:calc(100% + 80px)} }
+.ib {
+  position:absolute;inset:9px;
+  border:1px solid rgba(180,130,30,.25);
   pointer-events:none;z-index:51;
 }
-@keyframes sweep{0%{left:-100px}100%{left:calc(100% + 100px)}}
-.inner-bdr{
-  position:absolute;inset:10px;
-  border:1px solid rgba(180,130,30,.3);
-  pointer-events:none;z-index:52;
-}
-.inner-bdr::before{
-  content:'';position:absolute;inset:5px;
-  border:.5px dashed rgba(180,130,30,.15);
-}
-.wmark{
-  position:absolute;inset:0;opacity:.03;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Cpolygon points='40,2 78,20 78,60 40,78 2,60 2,20' fill='none' stroke='%23fff' stroke-width='.8'/%3E%3Ccircle cx='40' cy='40' r='18' fill='none' stroke='%23fff' stroke-width='.5'/%3E%3C/svg%3E");
-}
 
-/* ═══════════════════════════════════════════
-   BODY CONTENT
-═══════════════════════════════════════════ */
-.body{position:relative;z-index:10;padding:40px 32px 36px;text-align:center}
+/* ── body ── */
+.body { position:relative;z-index:10;padding:clamp(28px,6vw,44px) clamp(18px,5vw,30px) clamp(24px,5vw,36px);text-align:center; }
 
-/* story pages body — dark */
-.story-body{color:#E8D090}
-.story-body p{line-height:2.4;font-size:15px;color:#D4B870}
-.story-body .big{font-size:34px;font-weight:700;color:var(--g3);text-shadow:0 0 30px rgba(200,160,60,.5);line-height:1.2;margin-bottom:14px}
-.story-body .sub{font-size:13px;color:#9A7840;letter-spacing:1px}
-.story-body .body-text{
-  font-size:15px;color:#C8A850;line-height:2.5;
-  text-align:justify;text-align-last:center;
-}
-
-/* gold card text */
-.bismillah{font-family:'Scheherazade New',serif;font-size:28px;font-weight:700;color:var(--g1);text-shadow:0 1px 3px rgba(255,255,255,.5);letter-spacing:2px;margin-bottom:6px}
-.verse{font-size:12.5px;color:#5A3800;font-style:italic;line-height:2.1;margin-bottom:4px}
-.fam-name{font-size:17px;font-weight:700;background:linear-gradient(135deg,var(--g1),#8B5E00,var(--g2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.fam-line{font-size:14.5px;color:#2A1500;font-weight:700;line-height:2.4}
-.amp-s{display:block;font-size:11px;color:#7A5510;font-style:italic;margin:1px 0}
-.invite-t{font-size:14px;color:#3A2000;line-height:2.1;margin:14px 0 6px}
-.groom-n{font-family:'Scheherazade New',serif;font-size:50px;font-weight:700;background:linear-gradient(135deg,#5A3200,var(--g1),#8B6010,var(--g3));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.05}
-.bride-n{font-family:'Scheherazade New',serif;font-size:50px;font-weight:700;background:linear-gradient(135deg,#6B2010,var(--rose2),#A0402A);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.05}
-.and-sym{font-size:22px;color:var(--rose2);display:block;margin:3px 0;opacity:.8;font-style:italic}
-.closing{font-size:13px;color:#5A3800;line-height:2.2;margin-top:16px}
-.dua{font-family:'Scheherazade New',serif;font-size:17px;color:var(--g1);font-weight:700;margin-top:6px;text-shadow:0 1px 2px rgba(255,255,255,.4)}
-
-/* events */
-.events{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:10px 0}
-.ev{
-  background:linear-gradient(145deg,rgba(255,255,255,.6),rgba(255,248,220,.4));
-  border:1px solid rgba(160,110,20,.35);
-  border-radius:2px;padding:16px 10px 14px;
-  position:relative;overflow:hidden;
-}
-.ev::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--g1),var(--g3),var(--g1),transparent)}
-.ev-ic{font-size:22px;display:block;margin-bottom:7px}
-.ev-ti{font-size:19px;font-weight:700;color:var(--g1);display:block;margin-bottom:8px;text-shadow:0 1px 2px rgba(255,255,255,.4)}
-.ev-de{font-size:11px;color:#3A2200;line-height:2.1}
-.ev-da{font-size:13px;font-weight:700;color:var(--rose);display:block;margin-top:7px}
-.map-btn{
-  display:inline-flex;align-items:center;gap:4px;
-  margin-top:9px;padding:5px 11px;
-  background:linear-gradient(135deg,#7A5010,var(--g1));
-  color:#fff!important;text-decoration:none;
-  border-radius:20px;font-size:10px;
-  font-family:'Noto Naskh Arabic',sans-serif;
-  transition:transform .25s,box-shadow .25s;
-  box-shadow:0 2px 8px rgba(100,70,0,.4);
-}
-.map-btn:hover{transform:translateY(-2px);box-shadow:0 5px 14px rgba(100,70,0,.5)}
-.map-btn svg{width:11px;height:11px;fill:#fff;flex-shrink:0}
-
-/* ── reveal anims ── */
-.r{opacity:0;animation:revU .85s ease forwards}
-@keyframes revU{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
-.rd{animation-name:revD}
-@keyframes revD{from{opacity:0;transform:translateY(-20px)}to{opacity:1;transform:translateY(0)}}
+/* ── reveal ── */
+.r { opacity:0; animation:rv .8s ease forwards; }
+@keyframes rv { from{opacity:0;transform:translateY(18px)} to{opacity:1;transform:translateY(0)} }
 
 /* ── divider ── */
-.div{display:flex;align-items:center;gap:8px;margin:12px 0}
-.div::before,.div::after{content:'';flex:1;height:.5px;background:linear-gradient(90deg,transparent,var(--g1),transparent)}
-.divd{font-size:15px;color:var(--g1);line-height:1}
+.dv { display:flex;align-items:center;gap:7px;margin:10px 0; }
+.dv::before,.dv::after { content:'';flex:1;height:.5px;background:linear-gradient(90deg,transparent,var(--gold),transparent); }
+.dvc { color:var(--gold);font-size:14px;line-height:1; }
+.dvd { display:flex;align-items:center;gap:7px;margin:10px 0; }
+.dvd::before,.dvd::after { content:'';flex:1;height:.5px;background:linear-gradient(90deg,transparent,rgba(200,160,60,.5),transparent); }
+.dvdc { font-size:14px;line-height:1; }
 
-/* dark divider for story pages */
-.ddiv{display:flex;align-items:center;gap:8px;margin:14px 0}
-.ddiv::before,.ddiv::after{content:'';flex:1;height:.5px;background:linear-gradient(90deg,transparent,rgba(200,160,60,.6),transparent)}
-.ddivc{font-size:15px;color:rgba(200,160,60,.7);line-height:1}
+/* ── story text ── */
+.big { font-size:clamp(24px,6vw,34px);font-weight:700;line-height:1.2;margin-bottom:8px; }
+.sub { font-size:clamp(11px,2.5vw,12.5px);letter-spacing:.8px; }
+.bt  { font-size:clamp(13px,3.2vw,15px);line-height:2.5;color:#C8A850; }
 
-/* ═══════════════════════════════════════════
-   NAVIGATION
-═══════════════════════════════════════════ */
-#nav{
-  position:fixed;bottom:28px;left:50%;transform:translateX(-50%);
-  z-index:100;
-  display:flex;align-items:center;gap:12px;
-}
-.nav-dot{
-  width:9px;height:9px;border-radius:50%;
-  background:rgba(200,160,60,.3);
-  border:1px solid rgba(200,160,60,.5);
-  cursor:pointer;transition:all .35s ease;
-}
-.nav-dot.active{background:var(--g2);transform:scale(1.4);border-color:var(--g3)}
-#btn-prev,#btn-next{
-  padding:8px 20px;
-  background:rgba(180,130,30,.2);
-  border:1px solid rgba(180,130,30,.4);
-  color:var(--g3);
-  border-radius:20px;
+.ayah {
   font-family:'Scheherazade New',serif;
-  font-size:14px;cursor:pointer;
-  transition:all .3s ease;
-  backdrop-filter:blur(4px);
-  -webkit-backdrop-filter:blur(4px);
+  font-size:clamp(15px,4vw,19px);
+  color:var(--gold2);
+  line-height:2.1;
+  margin:8px 0 3px;
 }
-#btn-prev:hover,#btn-next:hover{background:rgba(180,130,30,.4);border-color:var(--g2)}
-#btn-prev:disabled,#btn-next:disabled{opacity:.25;cursor:default}
-#page-counter{
-  font-family:'Scheherazade New',serif;
-  font-size:12px;color:rgba(200,160,60,.5);
-  letter-spacing:1px;min-width:40px;text-align:center;
-}
+.aref { font-size:11px;color:rgba(200,160,60,.5);letter-spacing:.5px; }
 
-/* ═══════════════════════════════════════════
-   STORY SPECIFIC ELEMENTS
-═══════════════════════════════════════════ */
-.story-icon{
-  font-size:54px;display:block;margin:0 auto 12px;
-  animation:floatIcon 4s ease-in-out infinite;
-}
-@keyframes floatIcon{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
-
-.quote{
-  font-family:'Scheherazade New',serif;
-  font-size:18px;color:var(--g3);
-  font-style:italic;
-  line-height:2;
+.hbox {
+  border:1px solid rgba(200,160,60,.22);
+  border-radius:2px;padding:12px 14px;margin:10px 0;
+  background:rgba(200,160,60,.04);
   position:relative;
-  padding:10px 20px;
-  margin:14px 0;
 }
-.quote::before,.quote::after{
-  content:'"';font-size:50px;color:rgba(200,160,60,.2);
-  position:absolute;line-height:1;
-  font-family:'Amiri',serif;
-}
-.quote::before{top:0;right:4px}
-.quote::after{content:'"';bottom:-10px;left:4px}
+.hbox::before { content:'';position:absolute;top:0;left:0;bottom:0;width:2px;background:linear-gradient(180deg,transparent,var(--gold),transparent); }
+.ht  { font-family:'Scheherazade New',serif;font-size:clamp(14px,3.5vw,17px);line-height:2.3; }
+.hs  { font-size:11px;display:block;margin-top:5px;font-style:italic; }
 
-.timeline-item{
-  display:flex;align-items:flex-start;gap:14px;
-  text-align:right;margin:10px 0;
-}
-.t-dot{
-  width:10px;height:10px;border-radius:50%;
-  background:var(--g2);flex-shrink:0;margin-top:8px;
-  box-shadow:0 0 8px var(--g2);
-}
-.t-text{font-size:14px;color:#C8A850;line-height:2.2}
-.t-year{font-size:11px;color:#8A6830;display:block}
-
-/* promise rings */
-.rings{
-  display:flex;justify-content:center;align-items:center;gap:-8px;
-  margin:16px 0;
-}
-.ring{
-  width:60px;height:60px;border-radius:50%;
-  border:3px solid var(--g1);
-  position:relative;
-  box-shadow:0 0 20px rgba(180,130,30,.4);
-  animation:pulse 2.5s ease-in-out infinite;
-}
-.ring:first-child{animation-delay:0s;border-color:#B8862A}
-.ring:last-child{animation-delay:1.25s;border-color:#C4705A;border-width:3px;border-style:solid;border-color:var(--rose2);box-shadow:0 0 20px rgba(140,60,40,.4)}
-.ring-overlap{margin-left:-20px}
-@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
-.ring-inner{
-  position:absolute;inset:6px;border-radius:50%;
-  background:radial-gradient(circle,rgba(255,220,120,.1),transparent);
-}
-
-/* hearts float in story */
-.float-heart{
-  position:absolute;
-  animation:fh linear infinite;
-  pointer-events:none;
-}
-@keyframes fh{
-  0%{opacity:0;transform:translateY(0)scale(.7)}
-  15%{opacity:.6}85%{opacity:.2}
-  100%{opacity:0;transform:translateY(-500px)scale(1.1)rotate(20deg)}
-}
-
-/* cover page */
-.cover-title{
+/* ── cover ── */
+.cvt {
   font-family:'Scheherazade New',serif;
-  font-size:48px;font-weight:700;
-  background:linear-gradient(135deg,var(--g4),var(--g2),var(--g3));
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
-  background-clip:text;
-  filter:drop-shadow(0 0 20px rgba(200,160,60,.4));
+  font-size:clamp(32px,9vw,46px);font-weight:700;
+  background:linear-gradient(135deg,#F0CC70,#D4A843,#F0CC70);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
   line-height:1.2;
 }
-.cover-sub{font-size:13px;color:rgba(200,160,60,.6);letter-spacing:3px;margin-top:8px}
-.heart-big{
-  font-size:70px;
-  display:block;margin:0 auto 14px;
-  animation:heartbeat 1.6s ease-in-out infinite;
-  filter:drop-shadow(0 0 20px rgba(180,60,40,.5));
+.cvs { font-size:11.5px;color:rgba(200,160,60,.5);letter-spacing:2.5px;margin-top:6px; }
+.hbig {
+  font-size:clamp(52px,14vw,70px);display:block;margin:0 auto 10px;
+  animation:hb 1.8s ease-in-out infinite;
+  filter:drop-shadow(0 0 16px rgba(180,60,40,.5));
 }
-@keyframes heartbeat{0%,100%{transform:scale(1)}15%{transform:scale(1.2)}30%{transform:scale(1)}45%{transform:scale(1.15)}60%{transform:scale(1)}}
+@keyframes hb {0%,100%{transform:scale(1)}15%{transform:scale(1.2)}30%{transform:scale(1)}45%{transform:scale(1.12)}60%{transform:scale(1)}}
+.hint { font-size:11.5px;color:rgba(200,160,60,.35);animation:blk 2s ease-in-out infinite;margin-top:16px;letter-spacing:.8px; }
+@keyframes blk { 0%,100%{opacity:.2} 50%{opacity:.75} }
 
-.tap-hint{
-  font-size:12px;color:rgba(200,160,60,.4);
-  animation:blink 2s ease-in-out infinite;
-  margin-top:20px;letter-spacing:1px;
-}
-@keyframes blink{0%,100%{opacity:.3}50%{opacity:.8}}
+/* ── invitation card ── */
+.bsm { font-family:'Scheherazade New',serif;font-size:clamp(22px,5.5vw,28px);font-weight:700;color:var(--gold);text-shadow:0 1px 3px rgba(255,255,255,.5);letter-spacing:1.5px;margin-bottom:5px; }
+.vs  { font-size:clamp(11px,2.8vw,13px);color:#5A3800;font-style:italic;line-height:2; }
+.fn  { font-size:clamp(15px,4vw,17.5px);font-weight:700;background:linear-gradient(135deg,var(--gold),#7A5000,#D4A843);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text; }
+.fl  { font-size:clamp(13px,3.2vw,14.5px);color:#2A1500;font-weight:700;line-height:2.3; }
+.amp { display:block;font-size:10px;color:#7A5510;font-style:italic;margin:1px 0; }
+.gn  { font-family:'Scheherazade New',serif;font-size:clamp(38px,10vw,50px);font-weight:700;background:linear-gradient(135deg,#5A3200,var(--gold),#8B6010);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.05; }
+.bn  { font-family:'Scheherazade New',serif;font-size:clamp(38px,10vw,50px);font-weight:700;background:linear-gradient(135deg,#6B2010,var(--rose),#A0402A);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.05; }
+.and { font-size:18px;color:var(--rose);display:block;margin:3px 0;opacity:.8;font-style:italic; }
+.evs { display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:8px 0; }
+.ev  { background:linear-gradient(145deg,rgba(255,255,255,.6),rgba(255,248,210,.4));border:1px solid rgba(160,110,20,.35);border-radius:2px;padding:13px 9px 12px;position:relative;overflow:hidden; }
+.ev::before { content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),var(--gold2),var(--gold),transparent); }
+.eic { font-size:18px;display:block;margin-bottom:5px; }
+.eti { font-size:clamp(16px,4vw,19px);font-weight:700;color:var(--gold);display:block;margin-bottom:6px; }
+.ede { font-size:clamp(9.5px,2.4vw,11px);color:#3A2200;line-height:2.1; }
+.eda { font-size:clamp(11px,2.8vw,13px);font-weight:700;color:#8B3A2A;display:block;margin-top:6px; }
+.mb  { display:inline-flex;align-items:center;gap:4px;margin-top:8px;padding:4px 10px;background:linear-gradient(135deg,#7A5010,var(--gold));color:#fff!important;text-decoration:none;border-radius:20px;font-size:9.5px;font-family:'Scheherazade New',serif;transition:transform .2s;box-shadow:0 2px 7px rgba(100,70,0,.4); }
+.mb:hover { transform:translateY(-2px); }
+.mb svg { width:10px;height:10px;fill:#fff;flex-shrink:0; }
+.cl  { font-size:clamp(11.5px,2.8vw,13px);color:#5A3800;line-height:2.2;margin-top:12px; }
+.dua { font-family:'Scheherazade New',serif;font-size:clamp(14px,3.8vw,17px);color:var(--gold);font-weight:700;margin-top:4px; }
 
-/* ornament orn */
-.orn{display:block;margin:0 auto}
+.ic  { font-size:clamp(36px,10vw,50px);display:block;margin:0 auto 8px;animation:flt 4s ease-in-out infinite; }
+@keyframes flt { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
 
-/* progress bar */
-#progress{
-  position:fixed;top:0;left:0;height:2px;
-  background:linear-gradient(90deg,var(--g1),var(--g3));
-  z-index:200;transition:width .6s ease;
-  box-shadow:0 0 6px var(--g2);
-}
+.orn { display:block;margin:0 auto; }
 </style>
 </head>
 <body>
-
 <div id="stars"></div>
-<div id="ambient"></div>
-<div id="petals"></div>
-<div id="progress" style="width:0%"></div>
-
-<!-- ═══════════════════════════ PAGES ═══════════════════════════ -->
+<div id="pt"></div>
+<div id="prog" style="width:0%"></div>
 <div id="pages">
 
-<!-- ╔══════════════════════╗ -->
-<!-- ║   PAGE 0 — COVER    ║ -->
-<!-- ╚══════════════════════╝ -->
+<!-- ══ PAGE 0 — COVER ══ -->
 <div class="page active" id="p0">
 <div class="card">
-  <div class="card-frame">
-  <div class="card-inner dark-bg">
-    <div class="wmark"></div>
-    <div class="shimmer"></div>
-    <div class="inner-bdr"></div>
-    <div class="body" style="padding:52px 32px 44px">
+<div class="cframe"><div class="cin dk">
+<div class="wm"></div><div class="sh"></div><div class="ib"></div>
+<div class="body" style="padding:clamp(38px,8vw,52px) clamp(20px,5vw,30px) clamp(32px,7vw,44px)">
 
-      <div class="r rd" style="animation-delay:.1s">
-        <svg class="orn" viewBox="0 0 360 70" fill="none" xmlns="http://www.w3.org/2000/svg" width="90%" style="max-width:320px">
-          <path d="M180 4 C162 4 148 18 148 36 L148 62 L212 62 L212 36 C212 18 198 4 180 4Z" fill="none" stroke="#C9A040" stroke-width="1.2"/>
-          <path d="M148 36 C132 34 112 28 92 36 C108 36 120 44 138 44 L148 44" fill="none" stroke="#B8862A" stroke-width="1"/>
-          <path d="M92 36 C74 32 54 34 34 36 C48 36 58 42 74 42" fill="none" stroke="#C9A040" stroke-width=".8"/>
-          <path d="M34 36 C20 32 8 34 0 36" fill="none" stroke="#C9A040" stroke-width=".7" opacity=".5"/>
-          <path d="M212 36 C228 34 248 28 268 36 C252 36 240 44 222 44 L212 44" fill="none" stroke="#B8862A" stroke-width="1"/>
-          <path d="M268 36 C286 32 306 34 326 36 C312 36 302 42 286 42" fill="none" stroke="#C9A040" stroke-width=".8"/>
-          <path d="M326 36 C340 32 352 34 360 36" fill="none" stroke="#C9A040" stroke-width=".7" opacity=".5"/>
-          <path d="M180 22 L183 31 L192 31 L185 36 L188 45 L180 40 L172 45 L175 36 L168 31 L177 31Z" fill="#C9A040" opacity=".6"/>
-          <circle cx="180" cy="3" r="3" fill="#B8862A"/>
-          <circle cx="92" cy="36" r="2" fill="#C9A040" opacity=".7"/>
-          <circle cx="268" cy="36" r="2" fill="#C9A040" opacity=".7"/>
-        </svg>
-      </div>
-
-      <span class="heart-big r" style="animation-delay:.3s">❤️</span>
-
-      <div class="cover-title r" style="animation-delay:.5s">مهند وسحر</div>
-      <div class="cover-sub r" style="animation-delay:.65s">قصة حبٍّ كتبها القدر</div>
-
-      <div class="ddiv r" style="animation-delay:.8s"><span class="ddivc">✦</span></div>
-
-      <div class="r" style="animation-delay:.95s;font-size:14px;color:rgba(200,160,60,.65);line-height:2.3">
-        من أولِ نظرةٍ أشعلت القلب<br>
-        إلى يومٍ جمعَ الروحَين على عهد الله<br>
-        هذه قصّتهما...
-      </div>
-
-      <div class="tap-hint r" style="animation-delay:1.3s">← اضغط للمتابعة →</div>
-
-    </div>
+  <div class="r" style="animation-delay:.1s;margin-bottom:14px">
+    <svg class="orn" viewBox="0 0 320 60" fill="none" width="88%" style="max-width:290px">
+      <path d="M160 4C144 4 130 17 130 33L130 54L190 54L190 33C190 17 176 4 160 4Z" fill="none" stroke="#C9A040" stroke-width="1.2"/>
+      <path d="M130 33C114 31 94 25 74 33C90 33 103 41 122 41L130 41" fill="none" stroke="#B8862A" stroke-width="1"/>
+      <path d="M74 33C56 29 36 31 16 33C30 33 42 39 58 39" fill="none" stroke="#C9A040" stroke-width=".75" opacity=".6"/>
+      <path d="M190 33C206 31 226 25 246 33C230 33 217 41 198 41L190 41" fill="none" stroke="#B8862A" stroke-width="1"/>
+      <path d="M246 33C264 29 284 31 304 33C290 33 278 39 262 39" fill="none" stroke="#C9A040" stroke-width=".75" opacity=".6"/>
+      <path d="M160 19L163 27L172 27L165 32L168 40L160 35L152 40L155 32L148 27L157 27Z" fill="#C9A040" opacity=".5"/>
+      <circle cx="160" cy="3" r="3" fill="#B8862A"/>
+      <circle cx="74" cy="33" r="1.8" fill="#C9A040" opacity=".65"/>
+      <circle cx="246" cy="33" r="1.8" fill="#C9A040" opacity=".65"/>
+    </svg>
   </div>
+
+  <span class="hbig r" style="animation-delay:.28s">💛</span>
+  <div class="cvt r" style="animation-delay:.44s">الزواجُ في الإسلام</div>
+  <div class="cvs r" style="animation-delay:.58s">ميثاقٌ غليظٌ وعهدٌ مقدّس</div>
+
+  <div class="dvd r" style="animation-delay:.7s"><span class="dvdc" style="color:rgba(200,160,60,.6)">❧</span></div>
+
+  <div class="r" style="animation-delay:.82s;font-size:clamp(13px,3.2vw,15px);color:rgba(200,160,60,.6);line-height:2.5">
+    قبل أن نُقلِّبَ صفحاتِ الدعوة<br>
+    نستحضرُ جمالَ هذا الرباطِ المقدّس
   </div>
+
+  <div class="hint r" style="animation-delay:1.1s">← اضغط للمتابعة →</div>
+
+</div>
+</div></div>
 </div>
 </div>
 
-<!-- ╔════════════════════════════╗ -->
-<!-- ║  PAGE 1 — FIRST MEETING  ║ -->
-<!-- ╚════════════════════════════╝ -->
+<!-- ══ PAGE 1 — AYAH ══ -->
 <div class="page" id="p1">
 <div class="card">
-  <div class="card-frame">
-  <div class="card-inner dark-bg">
-    <div class="wmark"></div>
-    <div class="shimmer"></div>
-    <div class="inner-bdr"></div>
-    <div class="body story-body" style="padding:42px 30px 36px">
+<div class="cframe"><div class="cin dk">
+<div class="wm"></div><div class="sh"></div><div class="ib"></div>
+<div class="body">
 
-      <span class="story-icon r" style="animation-delay:.1s">🌙</span>
-      <div class="big r" style="animation-delay:.25s">أولُ لقاء</div>
-      <div class="sub r" style="animation-delay:.35s">حين تلتقي الأرواح قبل الأعين</div>
+  <span class="ic r" style="animation-delay:.1s">🌙</span>
+  <div class="big r" style="animation-delay:.22s;color:var(--gold2)">آيةُ المودة والرحمة</div>
 
-      <div class="ddiv r" style="animation-delay:.45s"><span class="ddivc">❧</span></div>
+  <div class="dvd r" style="animation-delay:.34s"><span class="dvdc" style="color:rgba(200,160,60,.55)">✦</span></div>
 
-      <div class="body-text r" style="animation-delay:.55s">
-        في ليلةٍ هادئة كانت النجومُ تُضيء السماء بلطفٍ خجول،
-        التقت عيناهُ بعينيها للمرة الأولى.
-      </div>
-
-      <div class="body-text r" style="animation-delay:.7s;margin-top:12px">
-        لم يكن مهند يعلم أنّ تلك الثوانيَ القليلة
-        ستُغيِّر مسارَ حياتهِ إلى الأبد.
-        شيءٌ في نظرتها — دفءٌ يشبه بيوتَ الطفولة
-        وهدوءٌ يشبه أمانَ الفجر.
-      </div>
-
-      <div class="quote r" style="animation-delay:.85s">
-        رأيتُ في عينيها وطناً لم أبحث عنه يوماً،
-        فوجدتُ نفسي أصلُّ أن يكونَ لي
-      </div>
-
-      <div class="ddiv r" style="animation-delay:1s"><span class="ddivc">✦</span></div>
-
-      <div class="body-text r" style="animation-delay:1.1s">
-        أمّا سحرُ فقد أحسّت بدفءٍ غريب حين ابتسم لها مهند —
-        ابتسامةٌ لا تتصنّعُ الجمال،
-        بل تعيشُ فيه.
-      </div>
-
-    </div>
+  <div class="ayah r" style="animation-delay:.44s">
+    ﴿ وَمِنْ آيَاتِهِ أَنْ خَلَقَ لَكُم مِّنْ أَنفُسِكُمْ أَزْوَاجاً
   </div>
+  <div class="ayah r" style="animation-delay:.56s">
+    لِّتَسْكُنُوا إِلَيْهَا وَجَعَلَ بَيْنَكُم مَّوَدَّةً وَرَحْمَةً ﴾
   </div>
+  <div class="aref r" style="animation-delay:.66s">— سورة الروم : ٢١ —</div>
+
+  <div class="dvd r" style="animation-delay:.76s"><span class="dvdc" style="color:rgba(200,160,60,.55)">❦</span></div>
+
+  <div class="bt r" style="animation-delay:.86s">
+    جعل اللهُ في الزواج ثلاثَ نعمٍ عظيمة —
+    <br>
+    <strong style="color:var(--gold2)">السكينة</strong> · <strong style="color:var(--gold2)">المودة</strong> · <strong style="color:var(--gold2)">الرحمة</strong>
+  </div>
+
+  <div class="bt r" style="animation-delay:1s;font-size:clamp(12px,3vw,13.5px);color:#9A7840;margin-top:8px">
+    حين يجدُ القلبُ وطنَه في قلبٍ آخر —<br>
+    فتلك آيةٌ من آيات الله
+  </div>
+
+</div>
+</div></div>
 </div>
 </div>
 
-<!-- ╔══════════════════════════╗ -->
-<!-- ║  PAGE 2 — GROWING LOVE  ║ -->
-<!-- ╚══════════════════════════╝ -->
+<!-- ══ PAGE 2 — HADITH ══ -->
 <div class="page" id="p2">
 <div class="card">
-  <div class="card-frame">
-  <div class="card-inner rose-bg">
-    <div class="wmark"></div>
-    <div class="shimmer"></div>
-    <div class="inner-bdr"></div>
-    <div class="body story-body" style="padding:42px 30px 36px">
+<div class="cframe"><div class="cin dk">
+<div class="wm"></div><div class="sh"></div><div class="ib"></div>
+<div class="body">
 
-      <span class="story-icon r" style="animation-delay:.1s">🌹</span>
-      <div class="big r" style="animation-delay:.25s;color:#E8A080">نموّ الحُب</div>
-      <div class="sub r" style="animation-delay:.35s;color:#8A5040">حين تتجذّر المشاعر في أعماق القلب</div>
+  <span class="ic r" style="animation-delay:.1s">📿</span>
+  <div class="big r" style="animation-delay:.22s;color:var(--gold2)">من السنّة النبوية</div>
 
-      <div class="ddiv r" style="animation-delay:.45s"><span class="ddivc" style="color:rgba(200,100,70,.7)">❦</span></div>
+  <div class="dvd r" style="animation-delay:.34s"><span class="dvdc" style="color:rgba(200,160,60,.55)">✦</span></div>
 
-      <div class="body-text r" style="animation-delay:.55s;color:#D4906A">
-        مضت الأيامُ وكلُّ يومٍ كان يُضيف طبقةً جديدة
-        من الفهم والقُرب والأُلفة.
-      </div>
-
-      <div style="margin:16px 0" class="r" style="animation-delay:.7s">
-        <div class="timeline-item r" style="animation-delay:.7s">
-          <div class="t-dot" style="background:#C4705A;box-shadow:0 0 8px rgba(196,112,90,.6)"></div>
-          <div class="t-text" style="color:#C8806A">
-            <span class="t-year">اكتشاف ♡</span>
-            عرفا أنّ لهما نفس الأحلام — بيتٌ هادئ وضحكاتٌ كثيرة
-          </div>
-        </div>
-        <div class="timeline-item r" style="animation-delay:.85s">
-          <div class="t-dot" style="background:#D4904A;box-shadow:0 0 8px rgba(212,144,74,.6)"></div>
-          <div class="t-text" style="color:#C8A060">
-            <span class="t-year">ثقة ♡</span>
-            تعلّم مهند أنّ سحر هي المكانُ الأكثر أماناً في العالم
-          </div>
-        </div>
-        <div class="timeline-item r" style="animation-delay:1s">
-          <div class="t-dot" style="background:#B8862A;box-shadow:0 0 8px rgba(184,134,42,.6)"></div>
-          <div class="t-text" style="color:#C8A850">
-            <span class="t-year">يقين ♡</span>
-            أدركت سحر أنّ قلبَها لن يرتاحَ إلا بجانبه
-          </div>
-        </div>
-      </div>
-
-      <div class="quote r" style="animation-delay:1.1s;color:#E8A080">
-        الحبُّ ليس لحظةً تأتي
-        بل حياةٌ تبنيها معاً يوماً بعد يوم
-      </div>
-
+  <div class="hbox r" style="animation-delay:.44s">
+    <div class="ht" style="color:#D4B870;font-size:clamp(15px,4vw,18px)">
+      « إذا تزوّجَ العبدُ فقد استكملَ نصفَ الدين »
     </div>
+    <span class="hs" style="color:#8A6830">رواه البيهقي</span>
   </div>
+
+  <div class="hbox r" style="animation-delay:.6s">
+    <div class="ht" style="color:#D4B870;font-size:clamp(14px,3.5vw,16px)">
+      « خيرُكم خيرُكم لأهله،
+      وأنا خيرُكم لأهلي »
+    </div>
+    <span class="hs" style="color:#8A6830">رواه الترمذي — صحيح</span>
   </div>
+
+  <div class="dvd r" style="animation-delay:.76s"><span class="dvdc" style="color:rgba(200,160,60,.55)">❧</span></div>
+
+  <div class="bt r" style="animation-delay:.86s;font-size:clamp(12.5px,3vw,14px)">
+    الزواجُ عبادةٌ وطريقٌ إلى الله،
+    وميزانُ الرجلِ الصالح
+    كيفَ يكونُ مع زوجته
+  </div>
+
+</div>
+</div></div>
 </div>
 </div>
 
-<!-- ╔══════════════════════════╗ -->
-<!-- ║  PAGE 3 — THE PROPOSAL  ║ -->
-<!-- ╚══════════════════════════╝ -->
+<!-- ══ PAGE 3 — DUA ══ -->
 <div class="page" id="p3">
 <div class="card">
-  <div class="card-frame">
-  <div class="card-inner dark-bg">
-    <div class="wmark"></div>
-    <div class="shimmer"></div>
-    <div class="inner-bdr"></div>
-    <div class="body story-body" style="padding:42px 30px 36px">
+<div class="cframe"><div class="cin dk">
+<div class="wm"></div><div class="sh"></div><div class="ib"></div>
+<div class="body">
 
-      <span class="story-icon r" style="animation-delay:.1s">💍</span>
-      <div class="big r" style="animation-delay:.25s">لحظةُ القرار</div>
-      <div class="sub r" style="animation-delay:.35s">حين تنطق الروح ما يعجز عنه اللسان</div>
+  <span class="ic r" style="animation-delay:.1s">🤲</span>
+  <div class="big r" style="animation-delay:.22s;color:var(--gold2)">دعاءُ الزفاف</div>
+  <div class="sub r" style="animation-delay:.32s;color:rgba(200,160,60,.5)">ما علّمه النبيُّ ﷺ</div>
 
-      <div class="ddiv r" style="animation-delay:.45s"><span class="ddivc">✦</span></div>
+  <div class="dvd r" style="animation-delay:.42s"><span class="dvdc" style="color:rgba(200,160,60,.55)">✦</span></div>
 
-      <div class="body-text r" style="animation-delay:.55s">
-        في يومٍ مشرقٍ كالنفوس الطاهرة، قرّر مهند
-        أن يُترجم ما يعتملُ في صدرهِ إلى كلماتٍ
-        يسمعُها قلبُ سحر قبل أُذنيها.
-      </div>
-
-      <!-- rings animation -->
-      <div class="rings r" style="animation-delay:.7s">
-        <div class="ring"><div class="ring-inner"></div></div>
-        <div class="ring ring-overlap"><div class="ring-inner"></div></div>
-      </div>
-
-      <div class="quote r" style="animation-delay:.85s">
-        لا أملكُ كنوزَ الأرض،
-        لكنّني أملكُ قلباً لن يحبَّ غيرَك أبداً...
-        أتأذنين لي أن أكونَ رفيقَ عمرِك؟
-      </div>
-
-      <div class="ddiv r" style="animation-delay:1s"><span class="ddivc">❧</span></div>
-
-      <div class="body-text r" style="animation-delay:1.05s">
-        وبدموعِ الفرح سالت على خديها
-        أجابت سحرُ بـ <strong style="color:var(--g3);font-size:18px">نعم</strong>
-        — تلك الكلمة التي غيّرت كلَّ شيء.
-      </div>
-
-      <div class="body-text r" style="animation-delay:1.2s;font-size:13px;color:#9A7840;margin-top:10px">
-        وتنفّست السماءُ بارتياح،
-        وابتسمت النجومُ وهي تشهد
-      </div>
-
+  <div class="hbox r" style="animation-delay:.52s">
+    <div class="ht" style="color:var(--gold2);font-size:clamp(17px,4.5vw,22px);line-height:2">
+      بَارَكَ اللَّهُ لَكَ<br>
+      وَبَارَكَ عَلَيْكَ<br>
+      وَجَمَعَ بَيْنَكُمَا فِي خَيْرٍ
     </div>
+    <span class="hs" style="color:#8A6830">من السنّة النبوية</span>
   </div>
+
+  <div class="dvd r" style="animation-delay:.72s"><span class="dvdc" style="color:rgba(200,160,60,.55)">❦</span></div>
+
+  <div class="bt r" style="animation-delay:.82s;font-size:clamp(12.5px,3vw,14px)">
+    ثلاثُ كلماتٍ تحملُ كلَّ شيء —
+    البركةُ في الرزق والصحة والذرية،
+    والخيرُ في الدنيا والآخرة
   </div>
+
+</div>
+</div></div>
 </div>
 </div>
 
-<!-- ╔══════════════════════════════╗ -->
-<!-- ║  PAGE 4 — FAMILIES BLESSING ║ -->
-<!-- ╚══════════════════════════════╝ -->
+<!-- ══ PAGE 4 — INVITATION ══ -->
 <div class="page" id="p4">
 <div class="card">
-  <div class="card-frame">
-  <div class="card-inner dark-bg">
-    <div class="wmark"></div>
-    <div class="shimmer"></div>
-    <div class="inner-bdr"></div>
-    <div class="body story-body" style="padding:42px 30px 36px">
+<div class="cframe"><div class="cin gd">
+<div class="wm"></div><div class="sh"></div><div class="ib"></div>
+<div class="body" style="padding:clamp(28px,6vw,40px) clamp(16px,4.5vw,26px) clamp(22px,5vw,32px)">
 
-      <span class="story-icon r" style="animation-delay:.1s">🤲</span>
-      <div class="big r" style="animation-delay:.25s">بركةُ الأهل</div>
-      <div class="sub r" style="animation-delay:.35s">لأنّ الحبَّ يكتملُ حين يُقرّهُ الوالدان</div>
+  <div class="r" style="animation-delay:.08s;margin-bottom:12px">
+    <svg class="orn" viewBox="0 0 320 72" fill="none" width="92%" style="max-width:280px">
+      <path d="M160 5C143 5 129 19 129 37L129 65L191 65L191 37C191 19 177 5 160 5Z" fill="none" stroke="#B8862A" stroke-width="1.2"/>
+      <path d="M129 37C112 35 90 28 70 37C87 37 101 46 121 46L129 46" fill="none" stroke="#B8862A" stroke-width="1"/>
+      <path d="M70 37C52 33 30 35 10 37C25 37 37 43 55 43" fill="none" stroke="#C9A040" stroke-width=".8" opacity=".65"/>
+      <path d="M191 37C208 35 230 28 250 37C233 37 219 46 199 46L191 46" fill="none" stroke="#B8862A" stroke-width="1"/>
+      <path d="M250 37C268 33 290 35 310 37C295 37 283 43 265 43" fill="none" stroke="#C9A040" stroke-width=".8" opacity=".65"/>
+      <path d="M160 22L163 31L172 31L165 36L168 45L160 40L152 45L155 36L148 31L157 31Z" fill="#C9A040" opacity=".5"/>
+      <circle cx="160" cy="4" r="3" fill="#B8862A"/>
+      <line x1="10" y1="65" x2="129" y2="65" stroke="#B8862A" stroke-width=".7"/>
+      <line x1="191" y1="65" x2="310" y2="65" stroke="#B8862A" stroke-width=".7"/>
+    </svg>
+  </div>
 
-      <div class="ddiv r" style="animation-delay:.45s"><span class="ddivc">❦</span></div>
+  <div class="bsm r" style="animation-delay:.2s">بسم الله الرحمن الرحيم</div>
+  <div class="vs r" style="animation-delay:.3s">﴿ وَجَعَلَ بَيْنَكُم مَّوَدَّةً وَرَحْمَةً ﴾ — الروم : ٢١</div>
 
-      <div class="body-text r" style="animation-delay:.55s">
-        حين علم الأهلُ الكرام بأمرهما
-        فتحوا أذرعتَهم ودعوا بالبركة والسعادة،
-        فامتلأت الدارُ بضحكاتٍ دافئة
-        ودموعِ فرحٍ لا تُوصف.
-      </div>
+  <div class="dv r" style="animation-delay:.4s"><span class="dvc">❧</span></div>
 
-      <div class="body-text r" style="animation-delay:.7s;margin-top:12px">
-        قالت أمُّ سحر وهي تضمُّها إليها:<br>
-        <em style="color:var(--g3);font-size:16px">"كُنتِ دعاءنا في كلِّ سجدة..."</em>
-      </div>
+  <div class="r" style="animation-delay:.48s;font-size:clamp(12px,3vw,13.5px);color:#3A2000;line-height:2">يسعد أهلا الكريمين</div>
 
-      <div class="ddiv r" style="animation-delay:.85s"><span class="ddivc">✦</span></div>
+  <div class="r" style="animation-delay:.56s">
+    <div class="fl"><span class="fn">آل أحمد نورا</span><span class="amp">و</span><span class="fn">آل حسن النمسي</span></div>
+    <div style="height:4px"></div>
+    <div class="fl"><span class="fn">آل الفكي أونسه</span><span class="amp">و</span><span class="fn">آل يوسف العمري</span></div>
+  </div>
 
-      <div class="body-text r" style="animation-delay:.95s">
-        وقال أبُ مهند وهو يشدُّ يدَ ابنه بقوة:<br>
-        <em style="color:var(--g3);font-size:16px">"اعتنِ بها كما اعتنينا بك..."</em>
-      </div>
+  <div class="dv r" style="animation-delay:.66s"><span class="dvc">✦</span></div>
+  <div class="r" style="animation-delay:.74s;font-size:clamp(12px,3vw,13.5px);color:#3A2000;line-height:2">بدعوتكم الكريمة لحضور حفل زواج ابنهم</div>
 
-      <div class="body-text r" style="animation-delay:1.1s;margin-top:14px;font-size:14px;color:#9A7840">
-        فكانت البركةُ أجملَ هديّة،
-        والرضا أعظمَ تاج.
-      </div>
+  <div class="r" style="animation-delay:.82s;margin-bottom:14px">
+    <span class="gn">مهند</span>
+    <span class="and">من</span>
+    <span class="bn">سحر</span>
+  </div>
 
-      <div class="ddiv r" style="animation-delay:1.2s"><span class="ddivc">🌿</span></div>
+  <div class="dv r" style="animation-delay:.92s"><span class="dvc">❦</span></div>
 
-      <div class="body-text r" style="animation-delay:1.3s;font-size:13px;color:#8A6830">
-        آل أحمد نورا • آل حسن النمسي<br>آل الفكي أونسه • آل يوسف العمري
-      </div>
-
+  <div class="evs">
+    <div class="ev r" style="animation-delay:1.02s">
+      <span class="eic">💍</span>
+      <span class="eti">العقد</span>
+      <div class="ede">منتزه الجيزة الذمالك<br><strong>نادي الأسطول جاردن</strong></div>
+      <span class="eda">٢٥ يونيو ٢٠٢٦</span>
+      <a href="https://maps.app.goo.gl/XjvX9HzxJjQkHtUB9?g_st=ic" target="_blank" class="mb">
+        <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+        الموقع
+      </a>
+    </div>
+    <div class="ev r" style="animation-delay:1.14s">
+      <span class="eic">🌹</span>
+      <span class="eti">الزفاف</span>
+      <div class="ede">منتجع عين الحياة<br><strong>صالة أوسيل</strong></div>
+      <span class="eda">٢٧ يونيو ٢٠٢٦</span>
+      <a href="https://maps.app.goo.gl/SnJR7ufSWy4fcR3N7?g_st=ic" target="_blank" class="mb">
+        <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+        الموقع
+      </a>
     </div>
   </div>
+
+  <div class="r" style="animation-delay:1.24s;margin-top:12px">
+    <svg class="orn" viewBox="0 0 260 38" fill="none" width="88%" style="max-width:220px">
+      <line x1="0" y1="19" x2="96" y2="19" stroke="#B8862A" stroke-width=".7" stroke-dasharray="4,4"/>
+      <ellipse cx="130" cy="11" rx="7" ry="10" fill="none" stroke="#B8862A" stroke-width="1"/>
+      <ellipse cx="117" cy="16" rx="5" ry="7" fill="none" stroke="#C9A040" stroke-width=".7" transform="rotate(-26,117,16)"/>
+      <ellipse cx="143" cy="16" rx="5" ry="7" fill="none" stroke="#C9A040" stroke-width=".7" transform="rotate(26,143,16)"/>
+      <circle cx="130" cy="11" r="2.5" fill="#C9A040" opacity=".6"/>
+      <line x1="164" y1="19" x2="260" y2="19" stroke="#B8862A" stroke-width=".7" stroke-dasharray="4,4"/>
+      <circle cx="96" cy="19" r="1.8" fill="#C9A040"/>
+      <circle cx="164" cy="19" r="1.8" fill="#C9A040"/>
+    </svg>
   </div>
+
+  <div class="cl r" style="animation-delay:1.32s">نسأل اللهَ أن يبارك لهما ويبارك عليهما</div>
+  <div class="dua r" style="animation-delay:1.4s">وَأَن يَجْمَعَ بَيْنَهُمَا فِي خَيْرٍ 🌿</div>
+
 </div>
-</div>
-
-<!-- ╔══════════════════════════╗ -->
-<!-- ║  PAGE 5 — THE PROMISE   ║ -->
-<!-- ╚══════════════════════════╝ -->
-<div class="page" id="p5">
-<div class="card">
-  <div class="card-frame">
-  <div class="card-inner dark-bg">
-    <div class="wmark"></div>
-    <div class="shimmer"></div>
-    <div class="inner-bdr"></div>
-    <div class="body story-body" style="padding:42px 30px 36px">
-
-      <span class="story-icon r" style="animation-delay:.1s">🕊️</span>
-      <div class="big r" style="animation-delay:.25s">عهدٌ أمام الله</div>
-      <div class="sub r" style="animation-delay:.35s">يومٌ تلتقي فيه الروحُ بتوأمها</div>
-
-      <div class="ddiv r" style="animation-delay:.45s"><span class="ddivc">❧</span></div>
-
-      <div class="body-text r" style="animation-delay:.55s">
-        وهاهو اليومُ المنشود يقترب،
-        يومٌ لطالما تمنّياهُ في خلواتِ أدعيتهما،
-        يومٌ كتبتهُ أقلامُ الغيب
-        وجعلتهُ قدَرَهُما الجميل.
-      </div>
-
-      <div class="quote r" style="animation-delay:.7s">
-        وعدتُكِ بالوفاء في السرّاء والضرّاء،
-        بأن أكون ملاذَكِ حين تضيق الدنيا،
-        وأن أزيدَكِ من عمري
-      </div>
-
-      <div class="ddiv r" style="animation-delay:.85s"><span class="ddivc">✦</span></div>
-
-      <div class="body-text r" style="animation-delay:.95s">
-        يدانِ ستتشابكان على عهدٍ في حضرة الله،
-        وقلبانِ سيُصبحانِ بيتاً واحداً
-        يضمُّ حياةً جديدة بكلِّ ما تحمله من أمل.
-      </div>
-
-      <div class="body-text r" style="animation-delay:1.1s;margin-top:14px;font-size:20px;color:var(--g3);font-weight:700">
-        مهند ♡ سحر
-      </div>
-
-      <div class="body-text r" style="animation-delay:1.25s;font-size:13px;color:#8A6830;margin-top:8px">
-        إلى الأبد وما بعده...
-      </div>
-
-    </div>
-  </div>
-  </div>
-</div>
-</div>
-
-<!-- ╔═══════════════════════════════╗ -->
-<!-- ║  PAGE 6 — THE INVITATION    ║ -->
-<!-- ╚═══════════════════════════════╝ -->
-<div class="page" id="p6">
-<div class="card">
-  <div class="card-frame">
-  <div class="card-inner gold-bg">
-    <div class="wmark"></div>
-    <div class="shimmer"></div>
-    <div class="inner-bdr"></div>
-    <div class="body" style="padding:40px 28px 32px">
-
-      <!-- top ornament -->
-      <div class="r rd" style="animation-delay:.1s;margin-bottom:14px">
-        <svg class="orn" viewBox="0 0 380 88" fill="none" xmlns="http://www.w3.org/2000/svg" width="95%" style="max-width:330px">
-          <path d="M190 5 C170 5 154 21 154 42 L154 80 L226 80 L226 42 C226 21 210 5 190 5Z" fill="none" stroke="#B8862A" stroke-width="1.3"/>
-          <path d="M190 19 C176 19 165 31 165 45 L165 74 L215 74 L215 45 C215 31 204 19 190 19Z" fill="none" stroke="#C9A040" stroke-width=".7" stroke-dasharray="3,3"/>
-          <path d="M154 42 C136 40 114 33 92 42 C110 42 124 51 144 51 L154 51" fill="none" stroke="#B8862A" stroke-width="1.1"/>
-          <path d="M92 42 C72 38 50 40 28 42 C44 42 56 48 72 48" fill="none" stroke="#C9A040" stroke-width=".9"/>
-          <path d="M28 42 C14 38 4 40 0 42" fill="none" stroke="#C9A040" stroke-width=".7" opacity=".6"/>
-          <path d="M226 42 C244 40 266 33 288 42 C270 42 256 51 236 51 L226 51" fill="none" stroke="#B8862A" stroke-width="1.1"/>
-          <path d="M288 42 C308 38 330 40 352 42 C336 42 324 48 308 48" fill="none" stroke="#C9A040" stroke-width=".9"/>
-          <path d="M352 42 C366 38 376 40 380 42" fill="none" stroke="#C9A040" stroke-width=".7" opacity=".6"/>
-          <path d="M190 28 L193 37 L203 37 L195 43 L198 52 L190 46 L182 52 L185 43 L177 37 L187 37Z" fill="#C9A040" opacity=".55"/>
-          <circle cx="190" cy="4" r="3.5" fill="#B8862A"/>
-          <line x1="0" y1="80" x2="154" y2="80" stroke="#B8862A" stroke-width=".8"/>
-          <line x1="226" y1="80" x2="380" y2="80" stroke="#B8862A" stroke-width=".8"/>
-          <circle cx="92" cy="42" r="2" fill="#C9A040" opacity=".7"/>
-          <circle cx="288" cy="42" r="2" fill="#C9A040" opacity=".7"/>
-        </svg>
-      </div>
-
-      <div class="bismillah r rd" style="animation-delay:.25s">بسم الله الرحمن الرحيم</div>
-
-      <div class="verse r" style="animation-delay:.38s">
-        ﴿ وَمِنْ آيَاتِهِ أَنْ خَلَقَ لَكُم مِّنْ أَنفُسِكُمْ أَزْوَاجاً لِّتَسْكُنُوا إِلَيْهَا ﴾
-      </div>
-
-      <div class="div r" style="animation-delay:.48s"><span class="divd">❧</span></div>
-
-      <div class="r" style="animation-delay:.56s;font-size:14px;color:#3A2000;line-height:2.1">
-        يسعد أهلا الكريمين
-      </div>
-
-      <div class="families r" style="animation-delay:.65s">
-        <div class="fam-line">
-          <span class="fam-name">آل أحمد نورا</span>
-          <span class="amp-s">و</span>
-          <span class="fam-name">آل حسن النمسي</span>
-        </div>
-        <div style="height:6px"></div>
-        <div class="fam-line">
-          <span class="fam-name">آل الفكي أونسه</span>
-          <span class="amp-s">و</span>
-          <span class="fam-name">آل يوسف العمري</span>
-        </div>
-      </div>
-
-      <div class="div r" style="animation-delay:.78s"><span class="divd">✦</span></div>
-
-      <div class="invite-t r" style="animation-delay:.86s">
-        بدعوتكم الكريمة لحضور حفل زواج ابنهم
-      </div>
-
-      <div class="r" style="animation-delay:.95s;margin-bottom:18px">
-        <span class="groom-n">مهند</span>
-        <span class="and-sym">من</span>
-        <span class="bride-n">سحر</span>
-      </div>
-
-      <div class="div r" style="animation-delay:1.05s"><span class="divd">❦</span></div>
-
-      <!-- events -->
-      <div class="events">
-        <div class="ev r" style="animation-delay:1.15s">
-          <span class="ev-ic">💍</span>
-          <span class="ev-ti">العقد</span>
-          <div class="ev-de">منتزه الجيزة الذمالك<br><strong>نادي الأسطول جاردن</strong></div>
-          <span class="ev-da">الخميس ٢٥ يونيو ٢٠٢٦</span>
-          <a href="https://maps.app.goo.gl/XjvX9HzxJjQkHtUB9?g_st=ic" target="_blank" class="map-btn">
-            <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
-            الموقع
-          </a>
-        </div>
-        <div class="ev r" style="animation-delay:1.3s">
-          <span class="ev-ic">🌹</span>
-          <span class="ev-ti">الزفاف</span>
-          <div class="ev-de">منتجع عين الحياة<br><strong>صالة أوسيل</strong></div>
-          <span class="ev-da">السبت ٢٧ يونيو ٢٠٢٦</span>
-          <a href="https://maps.app.goo.gl/SnJR7ufSWy4fcR3N7?g_st=ic" target="_blank" class="map-btn">
-            <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
-            الموقع
-          </a>
-        </div>
-      </div>
-
-      <!-- bottom orn -->
-      <div class="r" style="animation-delay:1.42s;margin-top:16px">
-        <svg class="orn" viewBox="0 0 300 44" fill="none" xmlns="http://www.w3.org/2000/svg" width="100%" style="max-width:260px">
-          <line x1="0" y1="22" x2="108" y2="22" stroke="#B8862A" stroke-width=".8" stroke-dasharray="5,4"/>
-          <ellipse cx="150" cy="14" rx="8" ry="12" fill="none" stroke="#B8862A" stroke-width="1"/>
-          <ellipse cx="136" cy="20" rx="6" ry="8" fill="none" stroke="#C9A040" stroke-width=".8" transform="rotate(-28,136,20)"/>
-          <ellipse cx="164" cy="20" rx="6" ry="8" fill="none" stroke="#C9A040" stroke-width=".8" transform="rotate(28,164,20)"/>
-          <circle cx="150" cy="14" r="3" fill="#C9A040" opacity=".65"/>
-          <circle cx="150" cy="36" r="2" fill="#B8862A"/>
-          <line x1="192" y1="22" x2="300" y2="22" stroke="#B8862A" stroke-width=".8" stroke-dasharray="5,4"/>
-          <circle cx="108" cy="22" r="2" fill="#C9A040"/>
-          <circle cx="192" cy="22" r="2" fill="#C9A040"/>
-        </svg>
-      </div>
-
-      <div class="closing r" style="animation-delay:1.52s">
-        نسأل الله أن يبارك لهما ويبارك عليهما
-      </div>
-      <div class="dua r" style="animation-delay:1.62s">
-        وَأَن يَجْمَعَ بَيْنَهُمَا فِي خَيْرٍ وَعَافِيَة 🌿
-      </div>
-
-    </div>
-  </div>
-  </div>
-</div>
-</div>
-
-<!-- ╔══════════════════════════╗ -->
-<!-- ║  PAGE 7 — FINAL / DUAT  ║ -->
-<!-- ╚══════════════════════════╝ -->
-<div class="page" id="p7">
-<div class="card">
-  <div class="card-frame">
-  <div class="card-inner dark-bg">
-    <div class="wmark"></div>
-    <div class="shimmer"></div>
-    <div class="inner-bdr"></div>
-    <div class="body story-body" style="padding:52px 30px 44px">
-
-      <div class="r rd" style="animation-delay:.1s">
-        <svg class="orn" viewBox="0 0 280 50" fill="none" xmlns="http://www.w3.org/2000/svg" width="80%" style="max-width:240px">
-          <line x1="0" y1="25" x2="100" y2="25" stroke="#C9A040" stroke-width=".7" stroke-dasharray="4,3"/>
-          <path d="M110 25 C115 10 125 5 140 5 C155 5 165 10 170 25 C165 40 155 45 140 45 C125 45 115 40 110 25Z" fill="none" stroke="#C9A040" stroke-width="1"/>
-          <path d="M140 15 L143 23 L151 23 L145 28 L147 36 L140 31 L133 36 L135 28 L129 23 L137 23Z" fill="#C9A040" opacity=".5"/>
-          <line x1="170" y1="25" x2="280" y2="25" stroke="#C9A040" stroke-width=".7" stroke-dasharray="4,3"/>
-        </svg>
-      </div>
-
-      <div class="big r" style="animation-delay:.3s;font-size:42px">مبارك</div>
-      <div class="big r" style="animation-delay:.45s;font-size:28px;color:var(--rose3)">مهند وسحر</div>
-
-      <div class="ddiv r" style="animation-delay:.6s"><span class="ddivc">✦</span></div>
-
-      <div class="body-text r" style="animation-delay:.7s;font-size:14px">
-        لكما من الله أجمل البداياتِ وأحلى النهايات،
-        وعمرٌ مليءٌ بالمحبة والتفاهم والبنين.
-      </div>
-
-      <div class="quote r" style="animation-delay:.85s;font-size:16px">
-        بارك اللهُ لكما وبارك عليكما
-        وجمعَ بينكما في خير
-      </div>
-
-      <div class="ddiv r" style="animation-delay:1s"><span class="ddivc">❧</span></div>
-
-      <div class="body-text r" style="animation-delay:1.1s;font-size:22px;color:var(--g3);font-weight:700;letter-spacing:2px">
-        مهند ♡ سحر
-      </div>
-
-      <div class="body-text r" style="animation-delay:1.2s;font-size:12px;color:#7A6030;margin-top:8px;letter-spacing:1px">
-        ٢٠٢٦ — إلى الأبد
-      </div>
-
-      <div class="r" style="animation-delay:1.35s;margin-top:24px">
-        <svg class="orn" viewBox="0 0 200 24" width="140" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <line x1="0" y1="12" x2="74" y2="12" stroke="#B8862A" stroke-width=".8"/>
-          <path d="M84 12 C88 4 96 1 100 1 C104 1 112 4 116 12 C112 20 104 23 100 23 C96 23 88 20 84 12Z" fill="none" stroke="#B8862A" stroke-width="1"/>
-          <circle cx="100" cy="12" r="3" fill="#B8862A" opacity=".6"/>
-          <line x1="116" y1="12" x2="200" y2="12" stroke="#B8862A" stroke-width=".8"/>
-        </svg>
-      </div>
-
-    </div>
-  </div>
-  </div>
+</div></div>
 </div>
 </div>
 
 </div><!-- /pages -->
 
-<!-- ─── NAVIGATION BAR ─── -->
-<div id="nav">
-  <button id="btn-prev" disabled>◄</button>
+<!-- ── NAV ── -->
+<div id="nav" style="position:fixed;bottom:18px;left:50%;transform:translateX(-50%);z-index:100;display:flex;align-items:center;gap:9px">
+  <button id="bp" disabled style="padding:7px 16px;background:rgba(180,130,30,.16);border:1px solid rgba(180,130,30,.36);color:#F0CC70;border-radius:20px;font-family:'Scheherazade New',serif;font-size:14px;cursor:pointer;backdrop-filter:blur(4px);transition:all .25s">◄</button>
   <div id="dots"></div>
-  <span id="page-counter">١ / ٨</span>
-  <button id="btn-next">►</button>
+  <span id="pc" style="font-family:'Scheherazade New',serif;font-size:11px;color:rgba(200,160,60,.42);letter-spacing:1px;min-width:32px;text-align:center">١ / ٥</span>
+  <button id="bn" style="padding:7px 16px;background:rgba(180,130,30,.16);border:1px solid rgba(180,130,30,.36);color:#F0CC70;border-radius:20px;font-family:'Scheherazade New',serif;font-size:14px;cursor:pointer;backdrop-filter:blur(4px);transition:all .25s">►</button>
 </div>
 
 <script>
-// ── STARS ──
+// stars
 const SC=document.getElementById('stars');
-for(let i=0;i<140;i++){
-  const s=document.createElement('div');s.className='star';
-  const sz=Math.random()*2.2+.4;
-  s.style.cssText=`width:${sz}px;height:${sz}px;top:${Math.random()*100}%;left:${Math.random()*100}%;animation-duration:${1.5+Math.random()*4}s;animation-delay:${Math.random()*6}s;opacity:${.1+Math.random()*.5}`;
-  SC.appendChild(s);
-}
+for(let i=0;i<100;i++){const s=document.createElement('div');s.className='s';const z=Math.random()*2+.3;s.style.cssText=`width:${z}px;height:${z}px;top:${Math.random()*100}%;left:${Math.random()*100}%;animation-duration:${1.5+Math.random()*4}s;animation-delay:${Math.random()*5}s;opacity:${.08+Math.random()*.45}`;SC.appendChild(s)}
 
-// ── PETALS ──
-const PC=document.getElementById('petals');
-const pshapes=['M5,0 C8,2 10,6 9,11 C8,15 5,18 5,20 C5,18 2,15 1,11 C0,6 2,2 5,0Z'];
-const pcols=['rgba(201,160,64,.45)','rgba(210,175,90,.4)','rgba(180,130,50,.35)','rgba(180,80,50,.35)'];
-for(let i=0;i<22;i++){
-  const p=document.createElement('div');p.className='petal';
-  const sz=10+Math.random()*16;
-  const c=pcols[Math.floor(Math.random()*pcols.length)];
-  p.style.cssText=`left:${Math.random()*100}%;animation-duration:${8+Math.random()*12}s;animation-delay:${Math.random()*14}s`;
-  p.innerHTML=`<svg viewBox="0 0 10 20" width="${sz}" height="${sz}"><path d="${pshapes[0]}" fill="${c}"/></svg>`;
-  PC.appendChild(p);
-}
+// petals
+const PT=document.getElementById('pt');
+for(let i=0;i<14;i++){const p=document.createElement('div');p.className='p';const z=9+Math.random()*14;const c=`rgba(${190+~~(Math.random()*40)},${120+~~(Math.random()*50)},${30+~~(Math.random()*30)},.45)`;p.style.cssText=`left:${Math.random()*100}%;animation-duration:${9+Math.random()*10}s;animation-delay:${Math.random()*14}s`;p.innerHTML=`<svg viewBox="0 0 10 20" width="${z}" height="${z}"><path d="M5,0C8,2 10,6 9,11C8,15 5,18 5,20C5,18 2,15 1,11C0,6 2,2 5,0Z" fill="${c}"/></svg>`;PT.appendChild(p)}
 
-// ── PAGE SYSTEM ──
-const TOTAL=8;
+// pages
+const TOTAL=5,pages=[...document.querySelectorAll('.page')],prog=document.getElementById('prog'),counter=document.getElementById('pc'),bp=document.getElementById('bp'),bn=document.getElementById('bn'),dotsEl=document.getElementById('dots');
 let cur=0;
-const pages=[...document.querySelectorAll('.page')];
-const amb=document.getElementById('ambient');
-const prog=document.getElementById('progress');
-const counter=document.getElementById('page-counter');
-const btnP=document.getElementById('btn-prev');
-const btnN=document.getElementById('btn-next');
-const dotsEl=document.getElementById('dots');
+const ar=['١','٢','٣','٤','٥'];
+const ambC=['rgba(160,120,20,.18)','rgba(40,40,100,.2)','rgba(40,80,30,.18)','rgba(80,40,20,.18)','rgba(180,140,30,.2)'];
 
-// ambients per page
-const ambients=[
-  'radial-gradient(ellipse 70% 60% at 50% 50%,rgba(180,130,30,.15),transparent 70%)',
-  'radial-gradient(ellipse 70% 60% at 50% 50%,rgba(100,80,20,.2),transparent 70%)',
-  'radial-gradient(ellipse 70% 60% at 50% 50%,rgba(160,60,40,.2),transparent 70%)',
-  'radial-gradient(ellipse 70% 60% at 50% 50%,rgba(80,40,20,.18),transparent 70%)',
-  'radial-gradient(ellipse 70% 60% at 50% 50%,rgba(60,40,100,.15),transparent 70%)',
-  'radial-gradient(ellipse 70% 60% at 50% 50%,rgba(40,80,40,.15),transparent 70%)',
-  'radial-gradient(ellipse 70% 60% at 50% 50%,rgba(180,140,30,.2),transparent 70%)',
-  'radial-gradient(ellipse 70% 60% at 50% 50%,rgba(160,120,30,.18),transparent 70%)',
-];
+for(let i=0;i<TOTAL;i++){const d=document.createElement('div');d.style.cssText=`width:8px;height:8px;border-radius:50%;background:rgba(200,160,60,.25);border:1px solid rgba(200,160,60,.4);cursor:pointer;transition:all .3s ease;${i===0?'background:var(--gold);transform:scale(1.4);':''}`;d.onclick=()=>go(i);dotsEl.appendChild(d)}
 
-const arabic=['١','٢','٣','٤','٥','٦','٧','٨'];
-
-// build dots
-for(let i=0;i<TOTAL;i++){
-  const d=document.createElement('div');
-  d.className='nav-dot'+(i===0?' active':'');
-  d.onclick=()=>goTo(i);
-  dotsEl.appendChild(d);
-}
-
-function goTo(next){
-  if(next===cur||next<0||next>=TOTAL)return;
-  const dir=next>cur?1:-1;
+function go(n){
+  if(n===cur||n<0||n>=TOTAL)return;
+  const dir=n>cur?1:-1;
   pages[cur].classList.remove('active');
   pages[cur].classList.add(dir>0?'exit-up':'exit-down');
-  setTimeout(()=>pages[cur].classList.remove('exit-up','exit-down'),900);
-  cur=next;
+  setTimeout(()=>pages[cur].classList.remove('exit-up','exit-down'),800);
+  cur=n;
+  pages[cur].scrollTop=0;
   pages[cur].classList.add('active');
-  // restart animations in new page
-  pages[cur].querySelectorAll('.r').forEach(el=>{
-    el.style.animation='none';
-    el.offsetHeight;
-    el.style.animation='';
-  });
-  amb.style.background=ambients[cur];
+  pages[cur].querySelectorAll('.r').forEach(el=>{el.style.animation='none';el.offsetHeight;el.style.animation=''});
   prog.style.width=((cur/(TOTAL-1))*100)+'%';
-  counter.textContent=arabic[cur]+' / '+arabic[TOTAL-1];
-  btnP.disabled=cur===0;
-  btnN.disabled=cur===TOTAL-1;
-  document.querySelectorAll('.nav-dot').forEach((d,i)=>d.classList.toggle('active',i===cur));
+  counter.textContent=ar[cur]+' / '+ar[TOTAL-1];
+  bp.disabled=cur===0; bn.disabled=cur===TOTAL-1;
+  dotsEl.querySelectorAll('div').forEach((d,i)=>{d.style.background=i===cur?'var(--gold)':'rgba(200,160,60,.25)';d.style.transform=i===cur?'scale(1.4)':'scale(1)'});
 }
 
-btnN.addEventListener('click',()=>goTo(cur+1));
-btnP.addEventListener('click',()=>goTo(cur-1));
+bn.addEventListener('click',()=>go(cur+1));
+bp.addEventListener('click',()=>go(cur-1));
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key==='ArrowDown')go(cur+1);if(e.key==='ArrowLeft'||e.key==='ArrowUp')go(cur-1)});
+let tx=0;
+document.addEventListener('touchstart',e=>{tx=e.touches[0].clientX},{passive:true});
+document.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>40)go(dx<0?cur+1:cur-1)},{passive:true});
 
-// swipe
-let tx=0,ty=0;
-document.addEventListener('touchstart',e=>{tx=e.touches[0].clientX;ty=e.touches[0].clientY},{passive:true});
-document.addEventListener('touchend',e=>{
-  const dx=e.changedTouches[0].clientX-tx;
-  const dy=e.changedTouches[0].clientY-ty;
-  if(Math.abs(dx)>Math.abs(dy)&&Math.abs(dx)>40){
-    goTo(dx<0?cur+1:cur-1);
-  }
-},{passive:true});
-
-// keyboard
-document.addEventListener('keydown',e=>{
-  if(e.key==='ArrowRight'||e.key==='ArrowDown')goTo(cur+1);
-  if(e.key==='ArrowLeft'||e.key==='ArrowUp')goTo(cur-1);
-});
-
-// set initial ambient
-amb.style.background=ambients[0];
+// button hover style
+[bp,bn].forEach(b=>{b.addEventListener('mouseenter',()=>{if(!b.disabled)b.style.background='rgba(180,130,30,.38)'});b.addEventListener('mouseleave',()=>{b.style.background='rgba(180,130,30,.16)'})});
 </script>
 </body>
 </html>
